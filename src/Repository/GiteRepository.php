@@ -39,6 +39,29 @@ class GiteRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByCriteres(array $equipement, array $service)
+    {
+        // dd($equipement);
+        $conn = $this->getEntityManager()->getConnection();
+        $equipements = implode(',', $equipement );
+        $services = implode(',', $service );
+        dd($equipements, $services);
+
+        $sql = '
+            SELECT g.id FROM gite g
+		    INNER JOIN equipement_gite eg ON g.id = eg.gite_id
+            INNER JOIN gite_service gs ON g.id = gs.gite_id
+		    WHERE eg.equipement_id in ('.$equipement.') ;
+		    AND gs.service_id in ('.$services.') ;
+            ';
+            dd($sql);
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['price' => $price]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return Gite[] Returns an array of Gite objects
 //     */
