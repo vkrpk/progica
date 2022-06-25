@@ -110,13 +110,13 @@ class SearchController extends AbstractController
     public function handleSearch(Request $request, GiteRepository $giteRepository)
     {
         $query = $request->request->all();
-        // dd($query);
         if($query){
-            $regions = $giteRepository->findByCriteres($query['form']['equipement_exterieur'], $query['form']['service']);
+            $equipementArray = array_merge($query['form']['equipement_exterieur'], $query['form']['equipement_interieur']);
+            $equipements = $giteRepository->findByCriteres($equipementArray, $query['form']['service']);
         }
 
         return $this->render('search/index.html.twig', [
-            'gites' => $regions
+            'gites' => $equipements
         ]);
     }
 }

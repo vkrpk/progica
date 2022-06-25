@@ -45,16 +45,15 @@ class GiteRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $equipements = implode(',', $equipement );
         $services = implode(',', $service );
-        dd($equipements, $services);
 
         $sql = '
             SELECT g.id FROM gite g
 		    INNER JOIN equipement_gite eg ON g.id = eg.gite_id
             INNER JOIN gite_service gs ON g.id = gs.gite_id
-		    WHERE eg.equipement_id in ('.$equipement.') ;
-		    AND gs.service_id in ('.$services.') ;
+		    WHERE eg.equipement_id in ('.$equipements.')
+		    AND gs.service_id in ('.$services.')
+            GROUP BY g.id;
             ';
-            dd($sql);
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery(['price' => $price]);
 
