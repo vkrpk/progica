@@ -25,10 +25,10 @@ class Gite
     #[ORM\Column(type: 'datetime')]
     private $horaire;
 
-    #[ORM\ManyToOne(targetEntity: ville::class, inversedBy: 'gites')]
+    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'gites')]
     private $ville;
 
-    #[ORM\ManyToOne(targetEntity: periode::class, inversedBy: 'gites')]
+    #[ORM\ManyToOne(targetEntity: Periode::class, inversedBy: 'gites')]
     private $periode;
 
     public function getId(): ?int

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil | Progica{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/accueil.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="galerie">
+        <div class="left1 galerie-item">
+            {# <img src="{{ 'assets/images/left1.jpg '}}" alt="" > #}
+        </div>
+        <div class="main galerie-item">
+            {# <h1>Progica</h1> #}
+                <div>
+                    <h3>PROGICA</h3>
+                    <h4>Locations saisonnières entre terre et mer</h4>
+                </div>
+            </h1>
+            {# <img src="{{ 'assets/images/main.jpg '}}" alt="" > #}
+        </div>
+        <div class="left2 galerie-item">
+            {# <img src="{{ 'assets/images/left2.jpg '}}" alt="" > #}
+        </div>
+        <div class="left3 galerie-item">
+            {# <img src="{{ 'assets/images/left3.jpg '}}" alt="" > #}
+        </div>
+        <div class="bottom1 galerie-item">
+            {# <img src="{{ 'assets/images/bottom1.jpg '}}" alt="" > #}
+        </div>
+    </div>
+{% endblock %}

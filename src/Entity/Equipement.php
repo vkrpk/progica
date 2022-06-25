@@ -19,6 +19,9 @@ class Equipement
     #[ORM\Column(type: 'float')]
     private $tarif;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isInterieur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Equipement
     public function setTarif(float $tarif): self
     {
         $this->tarif = $tarif;
+
+        return $this;
+    }
+
+    public function isIsInterieur(): ?bool
+    {
+        return $this->isInterieur;
+    }
+
+    public function setIsInterieur(bool $isInterieur): self
+    {
+        $this->isInterieur = $isInterieur;
 
         return $this;
     }

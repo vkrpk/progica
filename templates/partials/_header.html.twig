@@ -1,0 +1,20 @@
+{# {% extends "base.html.twig" %} #}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/header.css') }}">
+{% endblock %}
+
+<nav>
+    <ul class="desktop">
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">Recherches</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+    <span id="icon-menu"><i class="fa-solid fa-bars"></i></span>
+    <ul class="mobile">
+        <li><a href="{{ path('main') }}">Accueil</a></li>
+        {# <li><a href="{{ path('handleSearch') }}">Recherches</a></li> #}
+        {{ render(controller('App\\Controller\\SearchController::searchBar')) }}
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>

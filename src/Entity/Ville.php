@@ -18,7 +18,7 @@ class Ville
     #[ORM\Column(type: 'string', length: 255)]
     private $nom;
 
-    #[ORM\ManyToOne(targetEntity: departement::class, inversedBy: 'villes')]
+    #[ORM\ManyToOne(targetEntity: Departement::class, inversedBy: 'villes')]
     private $departement;
 
     #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Gite::class)]

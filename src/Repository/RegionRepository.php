@@ -39,6 +39,19 @@ class RegionRepository extends ServiceEntityRepository
         }
     }
 
+    public function findArticlesByName(string $query)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where(
+                $qb->expr()->like('p.content', ':query'),
+            )
+            ->setParameter('query', '%' . $query . '%')
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Region[] Returns an array of Region objects
 //     */
