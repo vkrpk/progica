@@ -7,19 +7,23 @@ nav {
     /* width: 95vw; */
 }
 
-ul {
+nav a {
+    color: #386c3d;
+}
+
+nav ul {
     display: flex;
     justify-content: center;
     gap: 3rem;
 }
 
-li {
+nav li {
     line-height: 50px;
     font-size: 2rem;
     color: var(--primary-third);
 }
 
-li:hover {
+nav li:hover {
     text-decoration: underline;
 }
 
@@ -61,7 +65,7 @@ li:hover {
         margin-top: 1rem;
     }
 
-    span {
+    nav span {
         position: absolute;
         right: 0.5rem;
         top: 0.5rem;
@@ -70,7 +74,7 @@ li:hover {
         z-index: 3;
     }
 
-    span:hover {
+    nav span:hover {
         cursor: pointer;
     }
 

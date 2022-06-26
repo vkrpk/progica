@@ -4,29 +4,20 @@
     Recherches | Progica
 {% endblock %}
 
-{% block body %}
-    {{ render(controller('App\\Controller\\SearchController::searchBar')) }}
-
-    {% if app.request.method == 'POST' %}
-        <div>
-            {% if gites | length == 0 %}
-                <h4>Aucun résulat pour votre recherche.</h4>
-            {% else %}
-            {# {{ dump(gites) }} #}
-                <h3 class="mt-3">Vos résulats de recherche :</h3>
-                {% for gite in gites %}
-                    <div class="mt-3 p-3 bg-light border rounded">
-                        {# <a href="{{ path('gite_show', {'slug': gite.slug}) }}"> #}
-                                <h6 class="text-dark"><i class="bi bi-arrow-down-right-square-fill text-primary"></i> {{ gite.couchage }}</h6>
-                                <div class="text-dark small p-1 rounded">
-                                        {# Posté le {{ gite.createdAt|format_datetime('medium', 'short') }} par {{ gite.author }} #}
-                                </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-    {% endif %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/form.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/cards.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 {% endblock %}
 
+{% block body %}
+    {{ render(controller('App\\Controller\\SearchController::searchBar')) }}
+    {{ include('search/_cards.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('assets/js/form.js') }}"></script>
+{% endblock %}

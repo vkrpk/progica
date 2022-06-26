@@ -1,3 +1,38 @@
+<h2>Triez par :</h2>
+{{ form_start(form) }}
+<section class="left">
+    <div class="input-container">
+      {{ form_row(form.equipement_interieur) }}
+    </div>
+    <div class="input-container">
+        {{ form_row(form.equipement_exterieur) }}
+    </div>
+    {# <div class="input-container">
+      <label for="email">Email</label>
+      <input type="text" />
+    </div> #}
+  </section>
+  <section class="right">
+    <div class="input-container">
+      {{ form_row(form.service) }}
+    </div>
 
+    {# <div class="input-container">
+      <label for="address">Address 1</label>
+      <input type="text" />
+    </div>
+    <div class="input-container">
+      <label for="address">Address 2 <span>(opcional)</span></label>
+      <input type="text" />
+    </div>
+    <div class="input-container">
+      <label for="comments">Comments</label>
+      <textarea name="comments" id=""></textarea>
+    </div> #}
+  </section>
+      {# {{ form_row(form.valider) }} #}
+  <div class="send-container">
+    <input type="submit" value="Rechercher" onclick="return true" id="form_valider" name="form[valider]"/>
+   </div>
+{{ form_end(form, {render_rest: false}) }}
 
-    {{ form(form) }}

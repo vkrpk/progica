@@ -59,7 +59,10 @@ class SearchController extends AbstractController
                     ->where('e.isInterieur = 1')
                     ->orderBy('e.nom', 'ASC');
                 },
-                'label' => 'Equipements intérieurs'
+                'label' => 'Equipements intérieurs',
+                'attr' => [
+                    'class' => 'select-equipement_interieur'
+                ]
             ])
 
             ->add('equipement_exterieur', EntityType::class, [
@@ -72,7 +75,10 @@ class SearchController extends AbstractController
                     ->where('e.isInterieur = 0')
                     ->orderBy('e.nom', 'ASC');
                 },
-                'label' => 'Equipements extérieurs'
+                'label' => 'Equipements extérieurs',
+                'attr' => [
+                    'class' => 'select-equipement_exterieur'
+                ]
             ])
 
             ->add('service', EntityType::class, [
@@ -85,14 +91,16 @@ class SearchController extends AbstractController
                     ->orderBy('s.nom', 'ASC');
                 },
                 'label' => 'Services',
-                'compound' => false
-            ])
-
-            ->add('valider', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'select-service'
                 ]
             ])
+
+            // ->add('valider', SubmitType::class, [
+            //     'attr' => [
+            //         'class' => 'send-container'
+            //     ]
+            // ])
 
             ->getForm();
 
