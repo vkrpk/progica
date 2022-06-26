@@ -1,6 +1,6 @@
 <div class="main">
-    <h1>Vos résulats de recherche :</h1>
     {% if app.request.method == 'POST' %}
+    <h1>Vos résulats de recherche :</h1>
         {% if gites | length == 0 %}
             <h4>Aucun résulat pour votre recherche.</h4>
             {% else %}
@@ -8,7 +8,7 @@
                     {% for gite in gites %}
                         <li class="cards_item">
                             <div class="card">
-                                <div class="card_image"><img src="https://picsum.photos/500/300/?image=10"></div>
+                                <div class="card_image"><img src="{{ asset(gite.image) }}"></div>
                                 <div class="card_content">
                                 <h2 class="card_title">Card Grid Layout</h2>
                                 <p class="card_text">Demo of pixel perfect pure CSS simple responsive card grid layout</p>

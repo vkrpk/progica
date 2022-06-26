@@ -39,6 +39,9 @@ class Gite
     #[ORM\OneToMany(mappedBy: 'gite', targetEntity: GiteService::class)]
     private $giteServices;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $image;
+
     public function __construct()
     {
         $this->equipementGites = new ArrayCollection();
@@ -178,6 +181,18 @@ class Gite
                 $giteService->setGite(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
