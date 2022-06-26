@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\GiteRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Ville;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\GiteRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: GiteRepository::class)]
 class Gite
@@ -29,9 +30,6 @@ class Gite
 
     #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'gites')]
     private $ville;
-
-    #[ORM\ManyToOne(targetEntity: Periode::class, inversedBy: 'gites')]
-    private $periode;
 
     #[ORM\OneToMany(mappedBy: 'gite', targetEntity: EquipementGite::class)]
     private $equipementGites;
@@ -109,18 +107,6 @@ class Gite
     public function setVille(?ville $ville): self
     {
         $this->ville = $ville;
-
-        return $this;
-    }
-
-    public function getPeriode(): ?periode
-    {
-        return $this->periode;
-    }
-
-    public function setPeriode(?periode $periode): self
-    {
-        $this->periode = $periode;
 
         return $this;
     }

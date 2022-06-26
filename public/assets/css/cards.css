@@ -27,6 +27,7 @@ img {
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: transparent;
+    margin-top: auto;
 }
 
 .btn:hover {
@@ -59,7 +60,7 @@ img {
 }
 
 .card {
-    background-color: white;
+    background-color: #386c3d;
     border-radius: 0.25rem;
     box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
     display: flex;
@@ -80,13 +81,14 @@ img {
     letter-spacing: 1px;
     text-transform: capitalize;
     margin: 0px;
+    margin-bottom: 1.25rem;
 }
 
 .card_text {
     color: #ffffff;
     font-size: 0.875rem;
     line-height: 1.5;
-    margin-bottom: 1.25rem;
+    /* margin-bottom: 1.25rem; */
     font-weight: 400;
 }
 .made_by {

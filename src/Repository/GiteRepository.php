@@ -64,7 +64,7 @@ class GiteRepository extends ServiceEntityRepository
             $test=array_merge($equipements !==  [] ?  ['equipements' => $equipements] : [], $services !== [] ? ['services' => $services] : []);
             // $resultSet = $stmt->executeQuery(['equipements' => $equipements, 'services' => $services]);
             $resultSet = $stmt->executeQuery($test);
-
+            // $resultSet->fetchAllAssociativeIndexed();
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
     }

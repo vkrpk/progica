@@ -39,6 +39,23 @@ class GiteServiceRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllByGite(int $id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT s.nom FROM service s
+            INNER JOIN gite_service gs
+            ON s.id = gs.service_id
+            WHERE gs.gite_id = :id;
+            ';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return GiteService[] Returns an array of GiteService objects
 //     */

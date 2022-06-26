@@ -39,6 +39,23 @@ class EquipementGiteRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllByGite(int $id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT e.nom FROM equipement e
+            INNER JOIN equipement_gite eg
+            ON e.id = eg.equipement_id
+            WHERE eg.gite_id = :id;
+            ';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return EquipementGite[] Returns an array of EquipementGite objects
 //     */

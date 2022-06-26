@@ -6,7 +6,11 @@ use App\Entity\Region;
 use App\Entity\Service;
 use App\Entity\Equipement;
 use App\Entity\Departement;
+use App\Repository\EquipementGiteRepository;
+use App\Repository\EquipementRepository;
 use App\Repository\GiteRepository;
+use App\Repository\GiteServiceRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,7 +114,7 @@ class SearchController extends AbstractController
     }
 
     #[Route('/handleSearch', name:'handleSearch')]
-    public function handleSearch(Request $request, GiteRepository $giteRepository)
+    public function handleSearch(Request $request, GiteRepository $giteRepository, VilleRepository $villeRepository)
     {
         $query = $request->request->all();
         if($query){
@@ -124,11 +128,41 @@ class SearchController extends AbstractController
                 $query['form']['service'] = [];
             }
             $equipementArray = array_merge($query['form']['equipement_exterieur'], $query['form']['equipement_interieur']);
-            $equipements = $giteRepository->findByCriteres($equipementArray, $query['form']['service']);
+            $gites = $giteRepository->findByCriteres($equipementArray, $query['form']['service']);
             return $this->render('search/index.html.twig', [
-                'gites' => $equipements
+                'gites' => $gites,
             ]);
         }
         return $this->render('search/index.html.twig');
+    }
+
+    public function villeById(int $id, VilleRepository $villeRepository)
+    {
+        $ville = $villeRepository->find($id);
+        $ville = $ville->getNom();
+        return new Response($ville);
+    }
+
+    public function equipementsArrayById(int $id, EquipementGiteRepository $equipementGiteRepository)
+    {
+        $equipements = $equipementGiteRepository->findAllByGite($id);
+        // dd($equipements);
+        $array = [];
+        foreach ($equipements as $equipement) {
+            $array[] = $equipement['nom'];
+        }
+        $arrayExplode = implode(', ', $array);
+        return new Response($arrayExplode);
+    }
+
+    public function servicesArrayById(int $id, GiteServiceRepository $giteServiceRepository)
+    {
+        $services = $giteServiceRepository->findAllByGite($id);
+        $array = [];
+        foreach ($services as $service) {
+            $array[] = $service['nom'];
+        }
+        $arrayExplode = implode(', ', $array);
+        return new Response($arrayExplode);
     }
 }

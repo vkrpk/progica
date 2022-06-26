@@ -39,6 +39,8 @@ class EquipementRepository extends ServiceEntityRepository
         }
     }
 
+
+
 //    /**
 //     * @return Equipement[] Returns an array of Equipement objects
 //     */
