@@ -39,23 +39,31 @@ class GiteRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByCriteres(array $equipement, array $service)
+    public function findByCriteres(array $equipement, ?array $service = [])
     {
         // dd($equipement);
         $conn = $this->getEntityManager()->getConnection();
-        $equipements = implode(',', $equipement );
-        $services = implode(',', $service );
+        $where = (!empty($equipement) OR !empty($service)) ? 'WHERE' : '';
+        $and = (!empty($equipement) && !empty($service)) ? 'AND' : '';
 
-        $sql = '
-            SELECT g.id FROM gite g
+        $equipements = empty($equipement) ? [] : implode(',', $equipement );
+        $services = empty($service) ? [] : implode(',', $service );
+
+        $sqlEquipementEmpty = empty($equipement) ? '' : 'eg.equipement_id in (:equipements)';
+        $sqlServiceEmpty = empty($service) ? '' : 'gs.service_id in (:services)';
+
+        $sql = "
+            SELECT g.* FROM gite g
 		    INNER JOIN equipement_gite eg ON g.id = eg.gite_id
             INNER JOIN gite_service gs ON g.id = gs.gite_id
-		    WHERE eg.equipement_id in ('.$equipements.')
-		    AND gs.service_id in ('.$services.')
+		    {$where} {$sqlEquipementEmpty}
+		    {$and} {$sqlServiceEmpty}
             GROUP BY g.id;
-            ';
-        $stmt = $conn->prepare($sql);
-        $resultSet = $stmt->executeQuery(['price' => $price]);
+            ";
+            $stmt = $conn->prepare($sql);
+            $test=array_merge($equipements !==  [] ?  ['equipements' => $equipements] : [], $services !== [] ? ['services' => $services] : []);
+            // $resultSet = $stmt->executeQuery(['equipements' => $equipements, 'services' => $services]);
+            $resultSet = $stmt->executeQuery($test);
 
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();

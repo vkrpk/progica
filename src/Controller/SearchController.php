@@ -8,15 +8,10 @@ use App\Entity\Equipement;
 use App\Entity\Departement;
 use App\Repository\GiteRepository;
 use Doctrine\ORM\EntityRepository;
-use App\Repository\RegionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -111,12 +106,21 @@ class SearchController extends AbstractController
     {
         $query = $request->request->all();
         if($query){
+            if(!array_key_exists('equipement_exterieur', $query['form'])){
+                $query['form']['equipement_exterieur'] = [];
+            }
+            if(!array_key_exists('equipement_interieur', $query['form'])){
+                $query['form']['equipement_interieur'] = [];
+            }
+            if(!array_key_exists('service', $query['form'])){
+                $query['form']['service'] = [];
+            }
             $equipementArray = array_merge($query['form']['equipement_exterieur'], $query['form']['equipement_interieur']);
             $equipements = $giteRepository->findByCriteres($equipementArray, $query['form']['service']);
+            return $this->render('search/index.html.twig', [
+                'gites' => $equipements
+            ]);
         }
-
-        return $this->render('search/index.html.twig', [
-            'gites' => $equipements
-        ]);
+        return $this->render('search/index.html.twig');
     }
 }

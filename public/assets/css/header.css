@@ -4,7 +4,7 @@ nav {
     background-color: var(--primary);
     height: 50px;
     position: relative;
-    width: 95vw;
+    /* width: 95vw; */
 }
 
 ul {
