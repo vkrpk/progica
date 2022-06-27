@@ -4,18 +4,27 @@
         {% if gites | length == 0 %}
             <h4>Aucun résulat pour votre recherche.</h4>
             {% else %}
+            <pre>
+            </pre>
                 <ul class="cards">
                     {% for gite in gites %}
                         <li class="cards_item">
                             <div class="card">
                                 <div class="card_image"><img src="{{ asset(gite.image) }}"></div>
                                 <div class="card_content">
-                                <h2 class="card_title">{{ render(controller('App\\Controller\\SearchController::villeById', {'id' : gite.ville_id})) }}</h2>
+                                <h2>{{ gite.ville.nom }}</h2>
+                                {# <h2 class="card_title">{{ render(controller('App\\Controller\\SearchController::villeById', {'id' : gite.ville_id})) }}</h2> #}
                                 <p class="card_text">Équipements :
-                                    {{ render(controller('App\\Controller\\SearchController::equipementsArrayById', {'id' : gite.ville_id})) }}
+                                {% for equip in gite.equipementGites %}
+                                    <span>{{ equip.equipement.nom }}</span>
+                                {% endfor %}
+                                    {# {{ render(controller('App\\Controller\\SearchController::equipementsArrayById', {'id' : gite.ville_id})) }} #}
                                 </p>
                                 <p class="card_text">Services :
-                                    {{ render(controller('App\\Controller\\SearchController::servicesArrayById', {'id' : gite.ville_id})) }}
+                                    {% for service in gite.giteServices %}
+                                        <span>{{ service.service.nom }}</span>
+                                    {% endfor %}
+                                    {# {{ render(controller('App\\Controller\\SearchController::servicesArrayById', {'id' : gite.ville_id})) }} #}
                                 </p>
                                 <button class="btn card_btn">Read More</button>
                                 </div>

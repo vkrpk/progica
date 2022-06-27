@@ -10,6 +10,7 @@ use App\Repository\EquipementGiteRepository;
 use App\Repository\EquipementRepository;
 use App\Repository\GiteRepository;
 use App\Repository\GiteServiceRepository;
+use App\Repository\ViewEquipementGiteRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -114,7 +115,7 @@ class SearchController extends AbstractController
     }
 
     #[Route('/handleSearch', name:'handleSearch')]
-    public function handleSearch(Request $request, GiteRepository $giteRepository, VilleRepository $villeRepository)
+    public function handleSearch(Request $request, GiteRepository $giteRepository, VilleRepository $villeRepository, ViewEquipementGiteRepository $ve)
     {
         $query = $request->request->all();
         if($query){
@@ -128,9 +129,35 @@ class SearchController extends AbstractController
                 $query['form']['service'] = [];
             }
             $equipementArray = array_merge($query['form']['equipement_exterieur'], $query['form']['equipement_interieur']);
-            $gites = $giteRepository->findByCriteres($equipementArray, $query['form']['service']);
+            // $gites = $giteRepository->findByCriteres($equipementArray, $query['form']['service']);
+            // dd($equipementArray);
+            if(!empty($equipementArray) && empty($query['form']['service'])){
+                $gites = $ve->findBy([
+                    'equipement_id' => $equipementArray,
+                ]);
+            } elseif(!empty($query['form']['service']) && empty($equipementArray)){
+                $gites = $ve->findBy([
+                    'service_id' => $query['form']['service'],
+                ]);
+            } elseif(!empty($query['form']['service']) && !empty($equipementArray)){
+                $gites = $ve->findBy([
+                    'equipement_id' => $equipementArray,
+                    'service_id' => $query['form']['service'],
+                ]);
+            }
+            // $gites = $ve->findBy([
+            //     'equipement_id' => $equipementArray,
+            //     'service_id' => $query['form']['service'],
+            // ]);
+            $gitesArray = [];
+            foreach ($gites as $gite) {
+                $gitesArray[] = $giteRepository->find($gite->getGiteId());
+            }
+            if(empty($gitesArray)){
+                $gitesArray = $ve->findAll();
+            }
             return $this->render('search/index.html.twig', [
-                'gites' => $gites,
+                'gites' => $gitesArray,
             ]);
         }
         return $this->render('search/index.html.twig');

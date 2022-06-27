@@ -41,10 +41,25 @@ class GiteRepository extends ServiceEntityRepository
 
     public function findByCriteres(array $equipement, ?array $service = [])
     {
-        // dd($equipement);
         $conn = $this->getEntityManager()->getConnection();
         $where = (!empty($equipement) OR !empty($service)) ? 'WHERE' : '';
         $and = (!empty($equipement) && !empty($service)) ? 'AND' : '';
+
+        if(!empty($equipement) && !empty($service)){
+            $sql = "
+            SELECT g.* FROM gite g
+		    INNER JOIN equipement_gite eg ON g.id = eg.gite_id
+            INNER JOIN gite_service gs ON g.id = gs.gite_id
+		    WHERE eg.equipement_id in (:equipements)
+		    AND gs.service_id in (:services)
+            GROUP BY g.id;
+            ";
+            dd($equipement, $service);
+
+            $stmt = $conn->prepare($sql);
+            $resultSet = $stmt->executeQuery($test);
+            return $resultSet->fetchAllAssociative();
+        }
 
         $equipements = empty($equipement) ? [] : implode(',', $equipement );
         $services = empty($service) ? [] : implode(',', $service );
@@ -68,6 +83,25 @@ class GiteRepository extends ServiceEntityRepository
             // $resultSet->fetchAllAssociativeIndexed();
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
+    }
+
+    public function findByDQL(array $equipement, ?array $service = [])
+    {
+        dd($equipement, $service);
+        $equipements = empty($equipement) ? [] : implode(',', $equipement );
+        $services = empty($service) ? [] : implode(',', $service );
+
+        return $this->createQueryBuilder('g')
+            ->select('g')
+            ->where('eg.equipement = :equip')
+            ->andWhere("eg.equipement LIKE 1")
+            ->leftJoin('g.equipementGites', 'eg')
+            ->leftJoin('g.equipementGites', 'eg')
+            // ->groupBy('g.id')
+            ->setParameter('equip', '%'.$equipements.'%')
+            ->setParameter('service', '%'.$services.'%')
+            ->getQuery()
+            ->execute();
     }
 
 //    /**
