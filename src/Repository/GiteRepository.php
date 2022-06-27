@@ -60,8 +60,9 @@ class GiteRepository extends ServiceEntityRepository
 		    {$and} {$sqlServiceEmpty}
             GROUP BY g.id;
             ";
+            // dd($sql);
             $stmt = $conn->prepare($sql);
-            $test=array_merge($equipements !==  [] ?  ['equipements' => $equipements] : [], $services !== [] ? ['services' => $services] : []);
+            $test = array_merge($equipements !==  [] ?  ['equipements' => $equipements] : [], $services !== [] ? ['services' => $services] : []);
             // $resultSet = $stmt->executeQuery(['equipements' => $equipements, 'services' => $services]);
             $resultSet = $stmt->executeQuery($test);
             // $resultSet->fetchAllAssociativeIndexed();

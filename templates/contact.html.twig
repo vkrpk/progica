@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/form.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/cards.css') }}">
+
+{% endblock %}
+
+
+{% block javascripts %}
+{% endblock %}
+
+{% block title %}Contact | Progica{% endblock %}
+
+{% block body %}
+    <h2>Contactez nous </h2>
+{{ form_start(form) }}
+<section class="left">
+    <div class="input-container">
+      {{ form_row(form.fullname) }}
+    </div>
+    <div class="input-container">
+        {{ form_row(form.subject) }}
+    </div>
+    {# <div class="input-container">
+      <label for="email">Email</label>
+      <input type="text" />
+    </div> #}
+  </section>
+  <section class="right">
+    <div class="input-container">
+      {{ form_row(form.email) }}
+    </div>
+     <div class="input-container">
+      {{ form_row(form.message) }}
+    </div>
+
+    {# <div class="input-container">
+      <label for="address">Address 1</label>
+      <input type="text" />
+    </div>
+    <div class="input-container">
+      <label for="address">Address 2 <span>(opcional)</span></label>
+      <input type="text" />
+    </div>
+    <div class="input-container">
+      <label for="comments">Comments</label>
+      <textarea name="comments" id=""></textarea>
+    </div> #}
+  </section>
+      {# {{ form_row(form.valider) }} #}
+  <div class="send-container">
+    <input type="submit" value="Envoyer" onclick="return true" id="form_valider" name="form[valider]"/>
+  </div>
+{{ form_end(form, {render_rest: false}) }}
+
+{% endblock %}
