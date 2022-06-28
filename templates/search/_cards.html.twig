@@ -1,6 +1,25 @@
 <div class="main">
     {% if app.request.method == 'POST' %}
-    <h1>Vos résulats de recherche :</h1>
+    {# {% for filtre in filtres %}
+        {{ dump(filtre )}}
+    {% endfor %} #}
+    <ul class='liste'>
+        {% if filtresEquipements | length > 0 %}
+            Equipements sélectionnés :
+            {% for equip in filtresEquipements %}
+                {{ equip }}
+            {% endfor %}
+        {% endif %}
+    </ul>
+    <ul class='liste'>
+        {% if filtresServices | length > 0 %}
+            Services sélectionnés :
+            {% for serve in filtresServices %}
+                {{ serve }}
+            {% endfor %}
+        {% endif %}
+    </ul>
+    <h1>Vos résulats de recherche : </h1>
         {% if gites | length == 0 %}
             <h4>Aucun résulat pour votre recherche.</h4>
             {% else %}

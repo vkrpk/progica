@@ -10,6 +10,7 @@ use App\Repository\EquipementGiteRepository;
 use App\Repository\EquipementRepository;
 use App\Repository\GiteRepository;
 use App\Repository\GiteServiceRepository;
+use App\Repository\ServiceRepository;
 use App\Repository\ViewEquipementGiteRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityRepository;
@@ -115,7 +116,7 @@ class SearchController extends AbstractController
     }
 
     #[Route('/handleSearch', name:'handleSearch')]
-    public function handleSearch(Request $request, GiteRepository $giteRepository, VilleRepository $villeRepository, ViewEquipementGiteRepository $ve)
+    public function handleSearch(Request $request, GiteRepository $giteRepository, VilleRepository $villeRepository, ViewEquipementGiteRepository $ve, EquipementRepository $equipementRepository, ServiceRepository $serviceRepository)
     {
         $query = $request->request->all();
         if($query){
@@ -129,6 +130,24 @@ class SearchController extends AbstractController
                 $query['form']['service'] = [];
             }
             $equipementArray = array_merge($query['form']['equipement_exterieur'], $query['form']['equipement_interieur']);
+
+            $filtres = $this->findNomEquipements($equipementArray);
+
+            $filtresEquipements = [];
+            foreach ($equipementArray as $e) {
+                $results = $equipementRepository->find($e);
+                $nom = $results->getNom();
+                $filtresEquipements[] = $nom;
+            }
+
+            $filtresServices = [];
+            foreach ($query['form']['service'] as $e) {
+                $results = $serviceRepository->find($e);
+                $nom = $results->getNom();
+                $filtresServices[] = $nom;
+            }
+
+
             // $gites = $giteRepository->findByCriteres($equipementArray, $query['form']['service']);
             // dd($equipementArray);
             if(!empty($equipementArray) && empty($query['form']['service'])){
@@ -163,6 +182,8 @@ class SearchController extends AbstractController
             // }
             return $this->render('search/index.html.twig', [
                 'gites' => $gitesArray,
+                'filtresEquipements' => $filtresEquipements,
+                'filtresServices' => $filtresServices,
             ]);
         }
         return $this->render('search/index.html.twig');
@@ -178,7 +199,6 @@ class SearchController extends AbstractController
     public function equipementsArrayById(int $id, EquipementGiteRepository $equipementGiteRepository)
     {
         $equipements = $equipementGiteRepository->findAllByGite($id);
-        // dd($equipements);
         $array = [];
         foreach ($equipements as $equipement) {
             $array[] = $equipement['nom'];
@@ -196,5 +216,15 @@ class SearchController extends AbstractController
         }
         $arrayExplode = implode(', ', $array);
         return new Response($arrayExplode);
+    }
+
+    public function findNomEquipements(array $array)
+    {
+        // $filtres = [];
+        // foreach ($array as $a) {
+        //     $results = $>find($a['id']);
+        //     $filtres[] = $results;
+        // }
+        // dd($filtres);
     }
 }
