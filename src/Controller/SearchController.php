@@ -150,12 +150,17 @@ class SearchController extends AbstractController
             //     'service_id' => $query['form']['service'],
             // ]);
             $gitesArray = [];
-            foreach ($gites as $gite) {
-                $gitesArray[] = $giteRepository->find($gite->getGiteId());
+            if(!empty($gites)){
+                foreach ($gites as $gite) {
+                    $gitesArray[] = $giteRepository->find($gite->getGiteId());
+                }
             }
             if(empty($gitesArray)){
-                $gitesArray = $ve->findAll();
+                $gitesArray = $giteRepository->findAll();
             }
+            // foreach ($gitesArray as $gite) {
+            //     dd($gite->getEquipementGites());
+            // }
             return $this->render('search/index.html.twig', [
                 'gites' => $gitesArray,
             ]);
