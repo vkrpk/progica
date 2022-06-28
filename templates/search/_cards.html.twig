@@ -5,7 +5,13 @@
             <h4>Aucun résulat pour votre recherche.</h4>
             {% else %}
                 <ul class="cards">
-                    {% for gite in gites %}
+                    {% set giteUniq = [] %}
+                    {% for singleGite in gites %}
+                        {% if  singleGite not in giteUniq %}
+                            {% set giteUniq = giteUniq|merge([ singleGite ]) %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for gite in giteUniq %}
                         <li class="cards_item">
                             <div class="card">
                                 <div class="card_image"><img src="{{ asset(gite.image) }}"></div>
