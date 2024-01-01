@@ -9,12 +9,16 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 class ContactController extends AbstractController
 {
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/contact', name: 'contact')]
     public function index(Request $request, EntityManagerInterface $manager, MailerInterface $mailer): Response
     {
@@ -28,19 +32,17 @@ class ContactController extends AbstractController
             $manager->flush();
 
             $email = (new TemplatedEmail())
-            ->from($contact->getEmail())
-            ->to('admin@progica.com')
+            ->from('symfony@victork.fr')
+            ->to('support@victork.fr')
             ->subject($contact->getSubject())
-            // ->html($contact->getMessage());
-
+            ->html($contact->getMessage())
             ->htmlTemplate('emails/contact.html.twig')
-
-            // pass variables (name => value) to the template
             ->context([
                 'contact' => $contact,
             ]);
 
             $mailer->send($email);
+
             $this->addFlash('succes', 'Votre message a bien été envoyé');
             return $this->redirectToRoute('main');
         }

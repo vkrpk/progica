@@ -73,10 +73,6 @@ class ContactType extends AbstractType
                     new Assert\NotBlank(),
                 ]
             ])
-            ->add('captcha', Recaptcha3Type::class, [
-                'constraints' => new Recaptcha3(),
-                'action_name' => 'contact',
-            ])
             // ->add('valider', SubmitType::class, [
             //     'attr' => [
             //         'class' => 'send-container'
